@@ -1,11 +1,13 @@
-FROM alpine:3.10
-LABEL Maintainer="Tim de Pater <code@trafex.nl>" \
+FROM alpine:3.11.3
+LABEL Maintainer="alicewish <anywaywillgo@gmail.com>" \
       Description="Lightweight container with Nginx 1.16 & PHP-FPM 7.3 based on Alpine Linux."
 
 # Install packages
 RUN apk --no-cache add php7 php7-fpm php7-mysqli php7-json php7-openssl php7-curl \
     php7-zlib php7-xml php7-phar php7-intl php7-dom php7-xmlreader php7-ctype php7-session \
     php7-mbstring php7-gd nginx supervisor curl
+
+RUN apk add --no-cache libzip-dev && docker-php-ext-configure zip --with-libzip=/usr/include && docker-php-ext-install zip
 
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
